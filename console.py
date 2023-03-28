@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -81,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
                         # _args = _args.replace('\"', '')
             line = ' '.join([_cmd, _cls, _id, _args])
 
-        except Exception as mess:
+        except Exception as _:
             pass
         finally:
             return line
@@ -118,11 +118,45 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        #=========== my edit ===========#
+        argl = args.split() #split arguments
+
+        #list of classes keys'
+        c_k = [key for key in HBNBCommand.classes.keys()]
+
+        def stripper(st="", defs=''): #not really functional??
+            ret_str = ""
+            for c in st:
+                if c not in defs:
+                    ret_str += c
+                else:
+                    pass
+            return ret_str
+
+        def filt(l=[]): #split class arg from other arg
+            class_ = stripper(l[0])
+            new_l = []
+            for i in l:
+                if i != l[0]:
+                    st_i = stripper(i)
+                    new_l.append(st_i)
+                else:
+                    pass
+            return class_, new_l
+
+        class_, others = filt(argl) #destructuring into class and other args
+
+        if class_ not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[class_]()
+        for atr_str in others:
+            atr = atr_str.split("=")
+            atr[1] = atr[1].replace("_", " ")
+            try:
+                setattr(new_instance, atr[0], eval(atr[1]))
+            except (SyntaxError, NameError):
+                setattr(new_instance, atr[0], atr[1])
         print(new_instance.id)
         storage.save()
 
@@ -223,7 +257,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, _ in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -272,7 +306,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +314,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
