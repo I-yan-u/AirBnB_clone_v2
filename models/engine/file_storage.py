@@ -10,13 +10,6 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-          }
-
-
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -26,6 +19,11 @@ class FileStorage:
         """ Returns all objects in file storage
             otherwise specified
         """
+        classes = {
+                'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                'State': State, 'City': City, 'Amenity': Amenity,
+                'Review': Review
+                }
         if cls != None:
             if type(cls) is str:
                 return classes[cls]
