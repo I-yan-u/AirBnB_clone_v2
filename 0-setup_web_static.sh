@@ -5,17 +5,15 @@
 #+ /data/web_static/current linked to
 #+ /data/web_static/releases/test/
 #+ Creates an /data/web_static/releases/test/index.html
-#+ Configures Nginx to serve /data/web_static/current/
+#+ Configures Nginx to serve /data/web_static/current/ 
 #+	to hbnb_static
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get -y install nginx
-
-sudo mkdir -p /data/web_static/releases/test/ /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
+echo "Welcome to The_Masterminds home" | sudo tee /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/
-echo "<html><head></head><body>Yay!!!</body></html>" | sudo tee /data/web_static/releases/test/index.html
-sudo sed -i -e '$i\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/; \n\t}' /etc/nginx/sites-available/default
-
-sudo service nginx restart
+sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+sudo service nginx start
