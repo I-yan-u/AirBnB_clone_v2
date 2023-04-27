@@ -53,10 +53,8 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
-        """
-        Deletes the specified object from __objects
-        otherwise pass.
-        """
+        """Deletes the specified object from __objects
+        otherwise pass."""
         keys = FileStorage.__objects.keys()
         obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
         if obj_key in keys:

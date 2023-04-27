@@ -52,6 +52,7 @@ def number(n):
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_temp(n):
+    """ Get path /number_template/<n> on host:5000 """
     string = 'Number: {}'.format(n)
     return render_template('5-number.html', content=string)
 
