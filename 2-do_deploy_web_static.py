@@ -10,6 +10,10 @@ env.password = None
 
 
 def do_deploy(archive_path):
+    """
+        Fabric function to deploy static codes to servers
+        archive_path: The path to the tar.gz file to deploy
+    """
     if exists(archive_path) is False:
         return False
 
