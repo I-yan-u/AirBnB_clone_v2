@@ -31,17 +31,12 @@ class FileStorage:
             otherwise specified
         """
         if cls is not None:
-            if type(cls) is str:
-                cls = eval(cls)
-
             temp = {}
-            for keys, values in self.__objects.items():
-                if cls.__name__ is values.__class__.__name__:
+            for keys, values in classes.items():
+                if cls == values.__class__ or cls == values.__class__.__name__:
                     temp[keys] = values
-                    # FileStorage.__objects.update(temp)
-                    return temp  # FileStorage.__objects
-        else:
-            return FileStorage.__objects
+                    return temp
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
