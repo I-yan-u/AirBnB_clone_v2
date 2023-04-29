@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
         #list of classes keys'
         c_k = [key for key in HBNBCommand.classes.keys()]
 
-        def stripper(st="", defs=''): #not really functional??
+        def stripper(st="", defs='"'): #not really functional??
             ret_str = ""
             for c in st:
                 if c not in defs:
@@ -158,7 +158,8 @@ class HBNBCommand(cmd.Cmd):
             except (SyntaxError, NameError):
                 setattr(new_instance, atr[0], atr[1])
         print(new_instance.id)
-        storage.save()
+        # storage.new(new_instance)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -234,20 +235,26 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+        obj_dict = {}
+        local_class = HBNBCommand.classes
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            if args not in local_class:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            elif args in local_class:
+                obj_dict = storage.all(local_class[args])
 
-        print(print_list)
+        else:
+            obj_dict = storage.all()
+
+        for key in obj_dict:
+            print_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(print_list), end="")
+        print("]")
+
 
     def help_all(self):
         """ Help information for the all command """

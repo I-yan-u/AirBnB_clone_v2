@@ -18,9 +18,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
+            'State': State, 'City': City
           }
 
 
@@ -56,7 +54,7 @@ class DBStorage:
 
         for local_cls in classes:
             if cls is None or cls is classes[local_cls] or cls is local_cls:
-                obj = self.__session.querry(classes[cls]).all()
+                obj = self.__session.query(classes[local_cls]).all()
                 for objs in obj:
                     key = objs.__class__.__name__ + "." + objs.id
                     temp_dict[key] = objs
