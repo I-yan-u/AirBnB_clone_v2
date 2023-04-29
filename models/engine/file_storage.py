@@ -1,9 +1,13 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""
+This module defines a class to manage file storage for hbnb clone
+"""
+
+
+import json
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
-import json
 from models.place import Place
 from models.review import Review
 from models.state import State
@@ -28,14 +32,14 @@ class FileStorage:
         """
         if cls is not None:
             if type(cls) is str:
-                return classes[cls]
+                cls = eval(cls)
 
             temp = {}
             for keys, values in self.__objects.items():
                 if cls.__name__ is values.__class__.__name__:
                     temp[keys] = values
-                    FileStorage.__objects.update(temp)
-                    return FileStorage.__objects
+                    # FileStorage.__objects.update(temp)
+                    return temp  # FileStorage.__objects
         else:
             return FileStorage.__objects
 
