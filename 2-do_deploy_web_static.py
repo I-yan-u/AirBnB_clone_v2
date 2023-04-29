@@ -29,6 +29,5 @@ def do_deploy(archive_path):
         run('chmod -R 755 /data/')
         print("New version deployed!")
         return True
-    except:
+    except FileNotFoundError:
         return False
-
