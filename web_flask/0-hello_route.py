@@ -1,8 +1,4 @@
  #!/usr/bin/python3
-""""
-0-hello_route.py
-Hello HBNB! flask app
-"""
 from flask import Flask
 app = Flask(__name__)
 
