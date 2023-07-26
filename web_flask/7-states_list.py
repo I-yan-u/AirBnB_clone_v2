@@ -1,7 +1,13 @@
 #!/usr/bin/python3
-""" List all states in storage """
+"""
+
+    Runs a Flask web application on 0.0.0.0:5000
+
+"""
 from flask import Flask, render_template
-from . models import storage
+import sys
+sys.path.append("../")
+from models import storage
 
 app = Flask(__name__)
 
