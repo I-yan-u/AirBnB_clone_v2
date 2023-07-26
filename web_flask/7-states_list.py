@@ -7,7 +7,10 @@
 from flask import Flask, render_template
 import sys
 sys.path.append("../")
-from models import storage
+try:
+    from models import storage
+except ImportError:
+    raise Exception(ImportError)
 
 app = Flask(__name__)
 
